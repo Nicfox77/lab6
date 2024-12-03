@@ -105,3 +105,30 @@ app.get("/author/delete", async function(req, res){
     const [rows] = await conn.query(sql);
     res.redirect("/authors");
 });
+
+app.get("/quotes", async function(req, res){
+    let sql = `SELECT * FROM q_quotes ORDER BY text`;
+    const [rows] = await conn.query(sql);
+    res.render("quoteList", {"quotes": rows});
+});
+
+app.get("/quote/edit", async function(req, res){
+    let quoteId = req.query.quoteId;
+    let sql = `SELECT * FROM q_quotes WHERE quoteId = ${quoteId}`;
+    const [rows] = await conn.query(sql);
+    res.render("editQuote", {"quoteInfo": rows});
+});
+
+app.post("/quote/edit", async function(req, res){
+    let sql = `UPDATE q_quotes SET text = ? WHERE quoteId = ?`;
+    let params = [req.body.text, req.body.quoteId];
+    const [rows] = await conn.query(sql, params);
+    res.redirect("/quotes");
+});
+
+app.get("/quote/delete", async function(req, res){
+    let quoteId = req.query.quoteId;
+    let sql = `DELETE FROM q_quotes WHERE quoteId = ${quoteId}`;
+    const [rows] = await conn.query(sql);
+    res.redirect("/quotes");
+});

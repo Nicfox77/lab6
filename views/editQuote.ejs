@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Operations</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<%- include ('partials/navbar') %>
+<h1>Updating Quote</h1>
+<form method="POST" action="/quote/edit">
+    <input type="hidden" name="quoteId" value="<%=quoteInfo[0].quoteId%>">
+    Quote Text:
+    <input type="text" name="text" value="<%=quoteInfo[0].text%>">
+    <br>
+    <button>Update Quote</button>
+</form>
+<%- include ('partials/footer') %>
+</body>
+</html>

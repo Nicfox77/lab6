@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Operations</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<% include partials/navbar %>
+<h1>Update/Delete Quotes</h1>
+<% for (i=0; i < quotes.length; i++) { %>
+<a href="/quote/edit?quoteId=<%=quotes[i].quoteId%>">UPDATE</a>
+<a href="/quote/delete?quoteId=<%=quotes[i].quoteId%>">DELETE</a>
+<%=quotes[i].text%> <br>
+<% } %>
+<% include partials/footer %>
+</body>
+</html>
