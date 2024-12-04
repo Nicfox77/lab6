@@ -50,19 +50,18 @@ app.post("/author/new", async function(req, res){
     let fName = req.body.fName;
     let lName = req.body.lName;
     let dob = req.body.dob;
-    let dod = req.body.dod;
+    let dod = req.body.dod || null; // Allow NULL for dod if empty
     let sex = req.body.sex;
     let profession = req.body.profession;
     let country = req.body.country;
     let portrait = req.body.portrait;
-    let biography = req.body.biography
+    let biography = req.body.biography;
     let sql = `INSERT INTO q_authors
-             (firstName, lastName, dob, dod, sex, profession, country, portrait, biography)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+               (firstName, lastName, dob, dod, sex, profession, country, portrait, biography)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     let params = [fName, lName, dob, dod, sex, profession, country, portrait, biography];
     const [rows] = await conn.query(sql, params);
-    res.render("newAuthor",
-        {"message": "Author added!"});
+    res.render("newAuthor", {"message": "Author added!"});
 });
 
 app.get("/authors", async function(req, res){
@@ -104,8 +103,9 @@ app.post("/author/edit", async function(req, res){
 
 
     let params = [req.body.fName,
-        req.body.lName, req.body.dob,
-        req.body.sex,req.body.authorId];
+        req.body.lName, req.body.dob, req.body.dod || null,
+        req.body.sex, req.body.profession, req.body.country,
+        req.body.portait, req.body.biography, req.body.authorId];
     const [rows] = await conn.query(sql,params);
     res.redirect("/authors");
 });
