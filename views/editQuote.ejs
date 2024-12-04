@@ -11,7 +11,13 @@
 <form method="POST" action="/quote/edit">
     <input type="hidden" name="quoteId" value="<%=quoteInfo[0].quoteId%>">
     Quote Text:
-    <input type="text" name="text" value="<%=quoteInfo[0].text%>">
+    <input type="text" name="quote" value="<%=quoteInfo[0].quote%>">
+    Author ID:
+    <input type="number" name="authorId" value="<%=quoteInfo[0].authorId%>">
+    Category:
+    <input type="text" name="category" value="<%=quoteInfo[0].category%>">
+    Likes:
+    <input type="number" name="likes" value="<%=quoteInfo[0].likes%>">
     <br>
     <button>Update Quote</button>
 </form>

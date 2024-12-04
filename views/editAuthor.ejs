@@ -22,6 +22,14 @@
     Sex:
     <input type="radio" name="sex" value="M" <% if (authorInfo[0].sex == "M") { %> checked <% } %> > Male
     <input type="radio" name="sex" value="F" <% if (authorInfo[0].sex == "F") { %> checked <% } %> > Female
+    Profession:
+    <input type="text" name="profession" value="<%=authorInfo[0].profession%>">
+    Country:
+    <input type="text" name="country" value="<%=authorInfo[0].country%>">
+    Portrait URL:
+    <input type="text" name="portraitUrl" value="<%=authorInfo[0].portrait%>">
+    Biography:
+    <input type="text" name="biography" value="<%=authorInfo[0].biography%>">
     <br>
     <button>Update Author</button>
 </form>

@@ -11,6 +11,7 @@ const PORT = 3006;
 
 // Middleware
 app.use(express.static(path.resolve('./public')));
+app.use(express.urlencoded({ extended: true })); // Add this line
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
 
@@ -48,11 +49,17 @@ app.get("/author/new", (req, res) => {
 app.post("/author/new", async function(req, res){
     let fName = req.body.fName;
     let lName = req.body.lName;
-    let birthDate = req.body.birthDate;
+    let dob = req.body.dob;
+    let dod = req.body.dod;
+    let sex = req.body.sex;
+    let profession = req.body.profession;
+    let country = req.body.country;
+    let portrait = req.body.portrait;
+    let biography = req.body.biography
     let sql = `INSERT INTO q_authors
-             (firstName, lastName, dob)
-              VALUES (?, ?, ?)`;
-    let params = [fName, lName, birthDate];
+             (firstName, lastName, dob, dod, sex, profession, country, portrait, biography)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    let params = [fName, lName, dob, dod, sex, profession, country, portrait, biography];
     const [rows] = await conn.query(sql, params);
     res.render("newAuthor",
         {"message": "Author added!"});
@@ -73,7 +80,7 @@ app.get("/author/edit", async function(req, res){
     let authorId = req.query.authorId;
 
 
-    let sql = `SELECT *, 
+    let sql = `SELECT *,
         DATE_FORMAT(dob, '%Y-%m-%d') dobISO
         FROM q_authors
         WHERE authorId =  ${authorId}`;
@@ -87,7 +94,12 @@ app.post("/author/edit", async function(req, res){
             SET firstName = ?,
                 lastName = ?,
                 dob = ?,
-                sex = ?
+                dod = ?,
+                sex = ?,
+                profession = ?,
+                country = ?,
+                portrait = ?,
+                biography = ?
             WHERE authorId =  ?`;
 
 
@@ -120,8 +132,11 @@ app.get("/quote/edit", async function(req, res){
 });
 
 app.post("/quote/edit", async function(req, res){
-    let sql = `UPDATE q_quotes SET text = ? WHERE quoteId = ?`;
-    let params = [req.body.text, req.body.quoteId];
+    let sql = `UPDATE q_quotes SET quote = ?, authorId = ?,
+                    category = ?,
+                    likes = ?
+                    WHERE quoteId = ?`
+    let params = [req.body.quote, req.body.authorId, req.body.category, req.body.likes, req.body.quoteId];
     const [rows] = await conn.query(sql, params);
     res.redirect("/quotes");
 });
@@ -139,9 +154,8 @@ app.get("/quote/new", async function(req, res){
 });
 
 app.post("/quote/new", async function(req, res){
-    let sql = `INSERT INTO q_quotes (text) VALUES (?)`;
-    let params = [req.body.text];
+    let sql = `INSERT INTO q_quotes (quote, authorId, category, likes) VALUES (?, ?, ?, ?)`;
+    let params = [req.body.quote, req.body.authorId, req.body.category, req.body.likes];
     const [rows] = await conn.query(sql, params);
     res.render("newQuote", {"message": "Quote added!"});
-
 });
